@@ -2,19 +2,28 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [allItem, setAllItem] = useState([]);
+  const [allItem, setAllItem] = useState([
+    {
+      id: "cc8a6b78-5c57-47cf-b84b-c1b113b09a3b",
+      task: "Hello",
+    },
+    {
+      id: "8e3e8cf4-2994-48e8-bb7a-03cc2f803e54",
+      task: "Task",
+    },
+  ]);
   const [task, setTask] = useState("");
   const [uuid, setUuid] = useState("");
   const [edit, setEdit] = useState(false);
 
-  const getItems = localStorage.getItem("tasks");
-  useEffect(() => {
-    if (getItems === null) {
-      setAllItem([]);
-    } else {
-      setAllItem(JSON.parse(getItems));
-    }
-  }, []);
+  // const getItems = localStorage.getItem("tasks");
+  // useEffect(() => {
+  //   if (getItems === null) {
+  //     setAllItem([]);
+  //   } else {
+  //     setAllItem(JSON.parse(getItems));
+  //   }
+  // }, []);
 
   const handleDelete = (id) => {
     const deleteTask = allItem.filter((task) => task.id !== id);
@@ -47,14 +56,18 @@ function App() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (uuid) {
-      handleUpdate();
+    if (validateTask) {
+      if (uuid) {
+        handleUpdate();
+      } else {
+        const id = uuidv4();
+        const newTask = { id: id, task: task };
+        setAllItem([...allItem, newTask]);
+        localStorage.setItem("tasks", JSON.stringify([...allItem, newTask]));
+        setTask("");
+      }
     } else {
-      const id = uuidv4();
-      const newTask = { id: id, task: task };
-      setAllItem([...allItem, newTask]);
-      localStorage.setItem("tasks", JSON.stringify([...allItem, newTask]));
-      setTask("");
+      alert("Please enter task...");
     }
   };
 
@@ -76,11 +89,10 @@ function App() {
               <input
                 id="task"
                 name="task"
-                type="task"
+                type="text"
                 placeholder="Add a Task..."
                 value={task}
                 onChange={(e) => setTask(e.target.value)}
-                required
                 className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
@@ -133,8 +145,19 @@ function App() {
                     {idx + 1}
                   </th>
                   <td class="px-6 py-4">{item?.task}</td>
-                  <td class="px-6 py-4 cursor-pointer" onClick={() => handleDelete(item?.id)}>❌</td>
-                  <td class="px-6 py-4 cursor-pointer" onClick={() => handleEdit(item)}>✏️</td>
+                  <td
+                    class="px-6 py-4 cursor-pointer"
+                    onClick={() => handleDelete(item?.id)}
+                  >
+                    ❌
+                  </td>
+                  <td
+                    class="px-6 py-4 cursor-pointer"
+                    onClick={() => handleEdit(item)}
+                    data-testid={`edit-task-${item?.id}`}
+                  >
+                    ✏️
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -144,5 +167,12 @@ function App() {
     </>
   );
 }
+
+export const validateTask = (task) => {
+  if (task) {
+    return true;
+  }
+  return false;
+};
 
 export default App;
