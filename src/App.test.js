@@ -1,22 +1,26 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import App, { validateTask } from "./App";
+import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 
 test("renders header title", () => {
   render(<App />);
+
   const linkElement = screen.getByText(/curd/i);
   expect(linkElement).toBeInTheDocument();
 });
 
 test("renders your task label in document", () => {
-  const component = render(<App />);
-  const label = component.getByLabelText("Your Task");
+  render(<App />);
+
+  const label = screen.getByLabelText("Your Task");
   expect(label).toBeInTheDocument();
 });
 
 describe("Let's test Main Container", () => {
   test("render the task form with save button", async () => {
     render(<App />);
+    
     const buttonList = await screen.findAllByRole("button");
     expect(buttonList).toHaveLength(1);
   });
@@ -28,8 +32,19 @@ describe("Let's test Main Container", () => {
 
   test("should failed when user try to submit 'Do Work' task", () => {
     render(<App />);
+
     const taskField = screen.getByPlaceholderText("Add a Task...");
-    userEvent.type(taskField, "Do your Work");
+
+    /* Reason: Warning: An update to App inside a test was not wrapped in act(...).
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      fire events that update state
+    });
+    assert on the output
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act at App */
+    act(() => userEvent.type(taskField, "Do your Work"));
     expect(taskField.value).not.toMatch("Do Work");
   });
 
@@ -49,7 +64,7 @@ describe("Let's test Main Container", () => {
     const cell = screen.getByTestId(testId);
     const taskField = screen.getByPlaceholderText("Add a Task...");
 
-    fireEvent.click(cell);
+    act(() => fireEvent.click(cell));
     expect(taskField.value).toMatch(item.task);
   });
 
@@ -61,9 +76,9 @@ describe("Let's test Main Container", () => {
     };
     const testId = `edit-task-${item.id}`;
     const cell = screen.getByTestId(testId);
-    const taskField = screen.getByPlaceholderText("Add a Task...");
 
-    fireEvent.click(cell);
+    act(() => fireEvent.click(cell));
+
     const buttonList = await screen.findAllByRole("button");
     const updateButton = buttonList.find((button) =>
       button.textContent.includes("Update")

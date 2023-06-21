@@ -80,7 +80,7 @@ function App() {
         <form onSubmit={onSubmit}>
           <div className="w-6/12 m-auto">
             <label
-              for="task"
+              htmlFor="task"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               Your Task
@@ -99,14 +99,14 @@ function App() {
             {!edit ? (
               <button
                 type="submit"
-                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Save
               </button>
             ) : (
               <button
                 type="submit"
-                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Update
               </button>
@@ -115,19 +115,19 @@ function App() {
         </form>
 
         {allItem?.length > 0 && (
-          <table class="w-6/12 m-auto mt-5 text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-6/12 m-auto mt-5 text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Sr. No.
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Task
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Delete
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Edit
                 </th>
               </tr>
@@ -136,23 +136,23 @@ function App() {
               {allItem?.map((item, idx) => (
                 <tr
                   key={idx}
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                   <th
                     scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                    className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                   >
                     {idx + 1}
                   </th>
-                  <td class="px-6 py-4">{item?.task}</td>
+                  <td className="px-6 py-4">{item?.task}</td>
                   <td
-                    class="px-6 py-4 cursor-pointer"
+                    className="px-6 py-4 cursor-pointer"
                     onClick={() => handleDelete(item?.id)}
                   >
                     ❌
                   </td>
                   <td
-                    class="px-6 py-4 cursor-pointer"
+                    className="px-6 py-4 cursor-pointer"
                     onClick={() => handleEdit(item)}
                     data-testid={`edit-task-${item?.id}`}
                   >
