@@ -16,6 +16,7 @@ function App() {
   const [uuid, setUuid] = useState("");
   const [edit, setEdit] = useState(false);
 
+  // Local Storage Code
   // const getItems = localStorage.getItem("tasks");
   // useEffect(() => {
   //   if (getItems === null) {
